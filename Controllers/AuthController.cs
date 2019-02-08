@@ -46,18 +46,19 @@ namespace Api.Controllers
             var userInDb = await _authRepository.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
             if (userInDb == null)
                 return Unauthorized();
-            
-            var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, userInDb.Id.ToString()),
-                new Claim(ClaimTypes.Name, userInDb.UserName)
-            };
-            
+
+            var claims = new[]
+            {
+                    new Claim(ClaimTypes.NameIdentifier, userInDb.Id.ToString()),
+                    new Claim(ClaimTypes.Name, userInDb.UserName)
+                };
+
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     _configuration.GetSection("AppSettings:Token").Value));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),

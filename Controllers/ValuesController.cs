@@ -21,6 +21,7 @@ namespace Api.Controllers
 
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             var values = await _context.Values.ToListAsync();
@@ -29,6 +30,7 @@ namespace Api.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Get(int id)
         {
             return Ok(await _context.Values.SingleOrDefaultAsync(x => x.Id == id));
